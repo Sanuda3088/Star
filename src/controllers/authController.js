@@ -130,3 +130,31 @@ export const refreshAccessToken = async (req, res) => {
     return sendErrorResponse(res, 401, "Invalid or expired refresh token", err);
   }
 };
+
+//User API
+export const user = async (req, res) => {
+  try {
+    const { userId } = req.user; // Assuming you have userId in req.user
+
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return sendErrorResponse(res, 404, "User not found");
+    }
+
+    const response = {
+      id: user._id,
+      userName: user.userName,
+      email: user.email,
+      appointments: user.appointments,
+    };
+
+    return sendSuccessResponse(
+      res,
+      200,
+      "User details retrieved successfully",
+      response
+    );
+  } catch (err) {
+    return sendErrorResponse(res, 500, "Internal server error ", err);
+  }
+};

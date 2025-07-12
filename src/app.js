@@ -15,12 +15,25 @@ const app = express();
 
 dotenv.config();
 
-const allowedOrigin = process.env.VITE_FRONTEND_URL || 'http://localhost:5173' || process.env.VITE_FRONTEND_ADMIN_URL;
+//const allowedOrigin = process.env.VITE_FRONTEND_URL || 'http://localhost:5173' || process.env.VITE_FRONTEND_ADMIN_URL;
 
-app.use(cors({
-  origin: allowedOrigin,
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: [process.env.VITE_FRONTEND_URL, process.env.VITE_FRONTEND_ADMIN_URL,'http://localhost:5173'],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Requested-With",
+      "X-Socket-ID",
+    ],
+  })
+);
+// app.use(cors({
+//   origin: allowedOrigin,
+//   credentials: true,
+// }));
 
 
 app.use(express.json());
